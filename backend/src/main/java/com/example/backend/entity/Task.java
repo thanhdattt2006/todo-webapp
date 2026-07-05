@@ -23,6 +23,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @jakarta.validation.constraints.NotBlank(message = "Title must not be blank")
     @Column(nullable = false)
     private String title;
 
