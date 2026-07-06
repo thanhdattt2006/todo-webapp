@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.entity.Task;
+import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.repository.TaskRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,21 +55,21 @@ public class TaskServiceTest {
     public void testUpdateTask_NotFound() {
         when(taskRepository.findById(1L)).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(RuntimeException.class, () -> {
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
             taskService.updateTask(1L, new Task());
         });
 
-        assertEquals("Task not found", exception.getMessage());
+        assertEquals("Task không tồn tại với ID: 1", exception.getMessage());
     }
 
     @Test
     public void testDeleteTask_NotFound() {
         when(taskRepository.findById(1L)).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(RuntimeException.class, () -> {
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
             taskService.deleteTask(1L);
         });
 
-        assertEquals("Task not found", exception.getMessage());
+        assertEquals("Task không tồn tại với ID: 1", exception.getMessage());
     }
 }
