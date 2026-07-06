@@ -72,21 +72,21 @@ export const useTasks = () => {
     try {
       const updatedTask = await taskApi.pin(id);
       setTasks(prev => prev.map(t => t.id === id ? updatedTask : t));
-      toast.success('Task pinned status updated');
+      toast.success(dict[currentLang]?.taskPinnedSuccess || 'Task pinned status updated');
     } catch (err) {
-      toast.error('Failed to update pin status');
+      toast.error(dict[currentLang]?.taskPinnedError || 'Failed to update pin status');
     }
-  }, []);
+  }, [currentLang]);
 
   const deleteTask = useCallback(async (id) => {
     try {
       await taskApi.deleteTask(id);
       setTasks(prev => prev.filter(t => t.id !== id));
-      toast.success('Task deleted successfully');
+      toast.success(dict[currentLang]?.taskDeletedSuccess || 'Task deleted successfully');
     } catch (err) {
-      toast.error('Failed to delete task');
+      toast.error(dict[currentLang]?.taskDeletedError || 'Failed to delete task');
     }
-  }, []);
+  }, [currentLang]);
 
   useEffect(() => {
     const handleRefetch = () => fetchTasks();

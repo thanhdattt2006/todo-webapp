@@ -1,8 +1,10 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { taskApi } from '../../services/taskService';
+import { useLanguage } from '../../hooks/useLanguage';
 
-export default function AchievementModal({ isOpen, onClose, currentLang }) {
+export default function AchievementModal({ isOpen, onClose }) {
+  const { t } = useLanguage();
   const [achievements, setAchievements] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -60,13 +62,11 @@ export default function AchievementModal({ isOpen, onClose, currentLang }) {
 
                 <Dialog.Title as="h3" className="text-3xl font-extrabold leading-6 text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-yellow-500 to-amber-600 flex items-center justify-center gap-3 pb-6 relative z-10 text-center">
                   <i className="fa-solid fa-trophy text-yellow-500 text-4xl animate-pulse"></i>
-                  {currentLang === 'vi' ? 'Bảng Vàng Thành Tựu' : 'Hall of Fame'}
+                  {t('achievementTitle')}
                 </Dialog.Title>
                 
                 <p className="text-center text-gray-400 mb-8 max-w-lg mx-auto relative z-10 text-sm">
-                  {currentLang === 'vi' 
-                    ? 'Vinh danh những nỗ lực tuyệt vời của bạn. Dưới đây là những công việc bạn đã xuất sắc hoàn thành.' 
-                    : 'Honoring your great efforts. Here are the tasks you have successfully completed.'}
+                  {t('achievementDesc')}
                 </p>
 
                 <div className="mt-2 flex-1 overflow-y-auto pr-3 custom-scrollbar space-y-4 relative z-10">
@@ -75,7 +75,7 @@ export default function AchievementModal({ isOpen, onClose, currentLang }) {
                   ) : achievements.length === 0 ? (
                     <div className="text-center py-16 text-gray-500 flex flex-col items-center gap-4">
                       <i className="fa-solid fa-seedling text-5xl opacity-50"></i>
-                      <span>{currentLang === 'vi' ? 'Chưa có thành tựu nào. Cố gắng lên nhé!' : 'No achievements yet. Keep going!'}</span>
+                      <span>{t('achievementEmpty')}</span>
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -88,11 +88,11 @@ export default function AchievementModal({ isOpen, onClose, currentLang }) {
                           <div className="flex items-center gap-4 text-xs text-gray-400">
                             <span className="flex items-center gap-1.5 bg-black/30 px-2.5 py-1 rounded-full">
                               <i className="fa-solid fa-check-double text-green-400"></i>
-                              {new Date(task.updatedAt || Date.now()).toLocaleDateString()}
+                              {new Date(task.updatedAt || Date.now()).toLocaleDateString()} - {t('completedLabel')}
                             </span>
                             {task.priority === 'urgent' && (
                               <span className="flex items-center gap-1.5 bg-red-500/10 text-red-400 px-2.5 py-1 rounded-full border border-red-500/20">
-                                <i className="fa-solid fa-fire"></i> Urgent
+                                <i className="fa-solid fa-fire"></i> {t('priorityUrgentLabel')}
                               </span>
                             )}
                           </div>
@@ -108,7 +108,7 @@ export default function AchievementModal({ isOpen, onClose, currentLang }) {
                     className="inline-flex justify-center rounded-full bg-gradient-to-r from-yellow-500 to-amber-600 px-10 py-3 text-sm font-bold text-white hover:from-yellow-400 hover:to-amber-500 transition-all shadow-[0_0_20px_-5px_rgba(234,179,8,0.5)] hover:shadow-[0_0_25px_-5px_rgba(234,179,8,0.8)] hover:scale-105 focus:outline-none"
                     onClick={onClose}
                   >
-                    {currentLang === 'vi' ? 'Tiếp tục phát huy!' : 'Keep it up!'}
+                    {t('btnKeepItUp')}
                   </button>
                 </div>
               </Dialog.Panel>

@@ -10,8 +10,13 @@ function App() {
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Navigate to="/home" replace />} />
         <Route path="home" element={<HomePage />} />
-        <Route path="*" element={<NotFoundPage />} />
       </Route>
+      <Route path="*" element={
+        <div className="relative min-h-screen bg-background-light dark:bg-background-dark">
+          <div className="ambient-glow"></div>
+          <NotFoundPage />
+        </div>
+      } />
     </Routes>
   );
 }

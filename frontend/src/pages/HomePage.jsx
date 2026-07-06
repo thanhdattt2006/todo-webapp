@@ -4,7 +4,7 @@ import { useTasks } from '../hooks/useTasks';
 import { useLanguage } from '../hooks/useLanguage';
 
 export default function HomePage() {
-  const { tasks, isLoading, error, addTask, toggleComplete, updateTask, deleteTask } = useTasks();
+  const { tasks, isLoading, error, addTask, toggleComplete, updateTask, deleteTask, togglePinTask } = useTasks();
   const { t } = useLanguage();
 
   return (

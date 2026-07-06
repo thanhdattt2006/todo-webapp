@@ -121,17 +121,17 @@ export default function TaskItem({ task, t, onToggleComplete, onDelete, onUpdate
           <div className="flex items-center gap-3 font-mono text-xs font-semibold">
             {isUrgent ? (
               <span className="bg-priority-urgent/10 text-priority-urgent px-2.5 py-1 rounded-md flex items-center gap-1.5">
-                <i className="fa-solid fa-fire text-[10px]"></i> URGENT
+                <i className="fa-solid fa-fire text-[10px]"></i> {t('priorityUrgentLabel')}
               </span>
             ) : (
               <span className="bg-priority-medium/10 text-priority-medium dark:text-[#FBBF24] px-2.5 py-1 rounded-md flex items-center gap-1.5">
                 <div className="w-1.5 h-1.5 rounded-full bg-priority-medium dark:bg-[#FBBF24]"></div>
-                MEDIUM
+                {t('priorityMediumLabel')}
               </span>
             )}
             
             <span className="text-content-sub-light dark:text-content-sub-dark flex items-center gap-1.5">
-              <i className="fa-regular fa-clock"></i> Today
+              <i className="fa-regular fa-clock"></i> {t('todayLabel')}
             </span>
           </div>
         </div>
