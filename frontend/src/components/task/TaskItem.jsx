@@ -111,7 +111,7 @@ export default function TaskItem({ task, t, onToggleComplete, onDelete, onUpdate
   return (
     <div 
       onClick={() => setIsViewModalOpen(true)}
-      className={`relative rounded-[20px] p-5 border transition-all duration-bounce hover:-translate-y-1 hover:shadow-card-hover group animate-fade-in-down cursor-pointer ${isUrgent ? 'bg-priority-urgent/5 dark:bg-priority-urgent/10 shadow-urgent border-priority-urgent/20 dark:border-priority-urgent/30' : 'bg-card-light dark:bg-card-dark shadow-card border-borderline-light dark:border-borderline-dark'}`}
+      className={`relative hover:z-50 rounded-[20px] p-5 border transition-all duration-bounce hover:-translate-y-1 hover:shadow-card-hover group animate-fade-in-down cursor-pointer ${isUrgent ? 'bg-priority-urgent/5 dark:bg-priority-urgent/10 shadow-urgent border-priority-urgent/20 dark:border-priority-urgent/30' : 'bg-card-light dark:bg-card-dark shadow-card border-borderline-light dark:border-borderline-dark'}`}
     >
       {isUrgent && (
         <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1/2 bg-priority-urgent rounded-r-full"></div>

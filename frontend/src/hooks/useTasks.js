@@ -75,6 +75,7 @@ export const useTasks = () => {
     try {
       const updatedTask = await taskApi.pin(id);
       setTasks(prev => prev.map(t => t.id === id ? updatedTask : t));
+      window.dispatchEvent(new Event('task-changed'));
       toast.success(t('taskPinnedSuccess') || 'Task pinned status updated');
     } catch (err) {
       toast.error(t('taskPinnedError') || 'Failed to update pin status');
