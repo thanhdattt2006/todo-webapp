@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { taskApi } from '../services/api';
+import toast from 'react-hot-toast';
 
 export const useTasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -30,8 +31,10 @@ export const useTasks = () => {
     try {
       const newTask = await taskApi.createTask(taskData);
       setTasks(prev => [newTask, ...prev]);
+      toast.success('Thêm task thành công!');
       return true;
     } catch (err) {
+      toast.error('Lỗi khi thêm task: ' + err.message);
       setError(err.message);
       return false;
     } finally {
@@ -45,8 +48,10 @@ export const useTasks = () => {
     setTasks(prev => prev.map(t => t.id === id ? { ...t, ...updates } : t));
     try {
       await taskApi.updateTask(id, updates);
+      toast.success('Cập nhật thành công!');
     } catch (err) {
       setTasks(previousTasks);
+      toast.error('Lỗi cập nhật: ' + err.message);
       setError(err.message);
     }
   };
@@ -58,6 +63,7 @@ export const useTasks = () => {
       await taskApi.toggleComplete(id);
     } catch (err) {
       setTasks(previousTasks);
+      toast.error('Lỗi: ' + err.message);
       setError(err.message);
     }
   };
@@ -67,8 +73,10 @@ export const useTasks = () => {
     setTasks(prev => prev.filter(t => t.id !== id));
     try {
       await taskApi.deleteTask(id);
+      toast.success('Đã xóa task!');
     } catch (err) {
       setTasks(previousTasks);
+      toast.error('Lỗi xóa task: ' + err.message);
       setError(err.message);
     }
   };

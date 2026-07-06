@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import TaskItem from './TaskItem';
 import EmptyState from '../common/EmptyState';
 
-export default function TaskList({ tasks, isLoading, error, t, onToggleComplete, onDelete, onAdd }) {
+export default function TaskList({ tasks, isLoading, error, t, onToggleComplete, onDelete, onAdd, onUpdate }) {
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
   const handleAdd = async () => {
@@ -98,6 +98,7 @@ export default function TaskList({ tasks, isLoading, error, t, onToggleComplete,
               t={t} 
               onToggleComplete={onToggleComplete}
               onDelete={onDelete}
+              onUpdate={onUpdate}
             />
           ))
         )}

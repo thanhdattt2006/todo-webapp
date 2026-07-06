@@ -4,6 +4,7 @@ import TaskList from './components/task/TaskList';
 import { useTasks } from './hooks/useTasks';
 import { useTheme } from './hooks/useTheme';
 import { useLanguage } from './hooks/useLanguage';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   const { tasks, isLoading, error, fetchTasks, addTask, toggleComplete, updateTask, deleteTask } = useTasks();
@@ -29,7 +30,9 @@ function App() {
           onToggleComplete={toggleComplete}
           onDelete={deleteTask}
           onAdd={addTask}
+          onUpdate={updateTask}
         />
+        <Toaster position="bottom-right" />
       </main>
     </>
   );
