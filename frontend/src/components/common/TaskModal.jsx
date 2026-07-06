@@ -7,6 +7,7 @@ import Placeholder from '@tiptap/extension-placeholder';
 export default function TaskModal({ isOpen, onClose, onSave, initialData, t, isEditMode }) {
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState('medium');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -30,10 +31,11 @@ export default function TaskModal({ isOpen, onClose, onSave, initialData, t, isE
       if (editor) {
         editor.commands.setContent(initialData?.description || '');
       }
+      setIsSubmitting(false);
     }
   }, [isOpen, initialData, editor]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!title.trim()) {
       alert(t('errorEmptyTitle') || 'Title must not be blank');
       return;
@@ -43,16 +45,21 @@ export default function TaskModal({ isOpen, onClose, onSave, initialData, t, isE
     const htmlContent = editor ? editor.getHTML() : '';
     const description = htmlContent === '<p></p>' ? '' : htmlContent;
 
-    onSave({
-      title: title.trim(),
-      priority,
-      description,
-    });
+    setIsSubmitting(true);
+    try {
+      await onSave({
+        title: title.trim(),
+        priority,
+        description,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-[9999]" onClose={onClose}>
+      <Dialog as="div" className="relative z-[9999]" onClose={() => !isSubmitting && onClose()}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -90,8 +97,9 @@ export default function TaskModal({ isOpen, onClose, onSave, initialData, t, isE
                       type="text"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
+                      disabled={isSubmitting}
                       placeholder={t('placeholderNewTask') || 'Enter task title...'}
-                      className="w-full bg-background-light dark:bg-background-dark border border-borderline-light dark:border-borderline-dark rounded-xl px-4 py-2 focus:outline-none focus:border-accent text-content-main-light dark:text-content-main-dark"
+                      className="w-full bg-background-light dark:bg-background-dark border border-borderline-light dark:border-borderline-dark rounded-xl px-4 py-2 focus:outline-none focus:border-accent text-content-main-light dark:text-content-main-dark disabled:opacity-50"
                     />
                   </div>
 
@@ -102,7 +110,8 @@ export default function TaskModal({ isOpen, onClose, onSave, initialData, t, isE
                     <select
                       value={priority}
                       onChange={(e) => setPriority(e.target.value)}
-                      className="w-full bg-background-light dark:bg-background-dark border border-borderline-light dark:border-borderline-dark rounded-xl px-4 py-2 focus:outline-none focus:border-accent text-content-main-light dark:text-content-main-dark"
+                      disabled={isSubmitting}
+                      className="w-full bg-background-light dark:bg-background-dark border border-borderline-light dark:border-borderline-dark rounded-xl px-4 py-2 focus:outline-none focus:border-accent text-content-main-light dark:text-content-main-dark disabled:opacity-50"
                     >
                       <option value="low">{t('priorityLow') || 'Low'}</option>
                       <option value="medium">{t('priorityMedium') || 'Medium'}</option>
@@ -114,7 +123,7 @@ export default function TaskModal({ isOpen, onClose, onSave, initialData, t, isE
                     <label className="block text-sm font-medium text-content-sub-light dark:text-content-sub-dark mb-1">
                       {t('fieldDescription') || 'Description'}
                     </label>
-                    <div className="border border-borderline-light dark:border-borderline-dark rounded-xl p-3 bg-background-light dark:bg-background-dark focus-within:border-accent transition-colors">
+                    <div className={`border border-borderline-light dark:border-borderline-dark rounded-xl p-3 bg-background-light dark:bg-background-dark transition-colors ${isSubmitting ? 'opacity-50 pointer-events-none' : 'focus-within:border-accent'}`}>
                       <div className="border-b border-borderline-light dark:border-borderline-dark pb-2 mb-2 flex gap-2 text-content-sub-light dark:text-content-sub-dark">
                         <button onClick={() => editor?.chain().focus().toggleBold().run()} className={`p-1 rounded ${editor?.isActive('bold') ? 'bg-surface-light dark:bg-surface-dark text-accent' : 'hover:bg-surface-light dark:hover:bg-surface-dark'}`}><i className="fa-solid fa-bold"></i></button>
                         <button onClick={() => editor?.chain().focus().toggleItalic().run()} className={`p-1 rounded ${editor?.isActive('italic') ? 'bg-surface-light dark:bg-surface-dark text-accent' : 'hover:bg-surface-light dark:hover:bg-surface-dark'}`}><i className="fa-solid fa-italic"></i></button>
@@ -131,17 +140,26 @@ export default function TaskModal({ isOpen, onClose, onSave, initialData, t, isE
                 <div className="mt-6 flex justify-end gap-3">
                   <button
                     type="button"
-                    className="inline-flex justify-center rounded-xl border border-borderline-light dark:border-borderline-dark px-5 py-2 text-sm font-medium text-content-main-light dark:text-content-main-dark hover:bg-surface-light dark:hover:bg-surface-dark transition-colors focus:outline-none"
+                    disabled={isSubmitting}
+                    className="inline-flex justify-center rounded-xl border border-borderline-light dark:border-borderline-dark px-5 py-2 text-sm font-medium text-content-main-light dark:text-content-main-dark hover:bg-surface-light dark:hover:bg-surface-dark transition-colors focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={onClose}
                   >
                     {t('btnCancel') || 'Cancel'}
                   </button>
                   <button
                     type="button"
-                    className="inline-flex justify-center rounded-xl border border-transparent bg-accent px-5 py-2 text-sm font-medium text-white hover:bg-accent-hover transition-colors focus:outline-none shadow-accent"
+                    disabled={isSubmitting}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-transparent bg-accent px-5 py-2 text-sm font-medium text-white hover:bg-accent-hover transition-colors focus:outline-none shadow-accent disabled:opacity-70 disabled:cursor-not-allowed"
                     onClick={handleSave}
                   >
-                    {t('btnSave') || 'Save Task'}
+                    {isSubmitting ? (
+                      <>
+                        <i className="fa-solid fa-spinner fa-spin"></i>
+                        <span>{t('btnSave') || 'Save Task'}...</span>
+                      </>
+                    ) : (
+                      t('btnSave') || 'Save Task'
+                    )}
                   </button>
                 </div>
               </Dialog.Panel>

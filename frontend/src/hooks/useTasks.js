@@ -51,10 +51,12 @@ export const useTasks = () => {
     try {
       await taskApi.updateTask(id, updates);
       toast.success(t('taskUpdatedSuccess') || 'Update successful!');
+      return true;
     } catch (err) {
       setTasks(previousTasks);
       toast.error((t('taskUpdatedError') || 'Update error: ') + err.message);
       setError(err.message);
+      return false;
     }
   };
 

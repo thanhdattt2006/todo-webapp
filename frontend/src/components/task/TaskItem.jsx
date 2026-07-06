@@ -168,7 +168,17 @@ export default function TaskItem({ task, t, onToggleComplete, onDelete, onUpdate
         </div>
       </div>
 
-      <TaskModal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} onSave={(data) => onUpdate(task.id, data)} t={t} isEditMode={true} initialData={task} />
+      <TaskModal 
+        isOpen={isEditModalOpen} 
+        onClose={() => setIsEditModalOpen(false)} 
+        onSave={async (data) => {
+          const success = await onUpdate(task.id, data);
+          if (success !== false) setIsEditModalOpen(false);
+        }} 
+        t={t} 
+        isEditMode={true} 
+        initialData={task} 
+      />
       <ConfirmDialog isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} onConfirm={() => onDelete(task.id)} title={t('confirmDeleteTitle')} message={t('confirmDeleteMsg')} confirmText={t('btnDelete')} cancelText={t('btnCancel')} type="danger" />
       <ConfirmDialog isOpen={isConfirmCompleteOpen} onClose={() => setIsConfirmCompleteOpen(false)} onConfirm={handleConfirmComplete} title={t('confirmCompleteTitle') || 'Xác nhận hoàn thành'} message={t('confirmCompleteMsg') || 'Bạn đã thực sự hoàn thành xuất sắc công việc này?'} confirmText={t('btnYesDone') || 'Đúng vậy!'} cancelText={t('btnNotYet') || 'Chưa đâu'} type="success" />
       <ViewTaskModal isOpen={isViewModalOpen} onClose={() => setIsViewModalOpen(false)} task={task} t={t} currentLang={currentLang} />
