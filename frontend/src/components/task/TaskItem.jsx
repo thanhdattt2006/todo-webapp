@@ -6,6 +6,7 @@ export default function TaskItem({ task, t, onToggleComplete, onDelete, onUpdate
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isToggling, setIsToggling] = useState(false);
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -19,26 +20,62 @@ export default function TaskItem({ task, t, onToggleComplete, onDelete, onUpdate
   }, []);
 
   const isUrgent = task.priority === 'urgent';
-  const isCompleted = task.is_completed;
+  const isCompleted = task.completed;
+
+  const handleToggle = async () => {
+    setIsToggling(true);
+    await onToggleComplete(task.id);
+    setIsToggling(false);
+  };
 
   if (isCompleted) {
     return (
-      <div className="relative bg-transparent dark:bg-transparent rounded-[20px] p-5 border border-borderline-light/50 dark:border-borderline-dark/50 opacity-60 grayscale-[30%] hover:opacity-80 transition-opacity duration-300 animate-fade-in-down">
-        <div className="flex gap-4 items-center">
-          <div>
-            <input 
-              type="checkbox" 
-              className="task-checkbox" 
-              checked 
-              onChange={() => onToggleComplete(task.id)} 
-            />
-          </div>
-          <div className="flex-1">
-            <h3 className="text-lg font-medium text-content-sub-light dark:text-content-sub-dark line-through decoration-2 decoration-borderline-light dark:decoration-borderline-dark">
+      <div className="relative bg-surface-light/30 dark:bg-surface-dark/30 rounded-[20px] p-5 border border-borderline-light/50 dark:border-borderline-dark/50 hover:opacity-80 transition-all duration-300 animate-fade-in-down group flex gap-4 items-start shadow-sm">
+        <div className="pt-1">
+          <button 
+            onClick={handleToggle}
+            disabled={isToggling}
+            className="w-6 h-6 rounded-full border-2 bg-green-500 border-green-500 text-white flex items-center justify-center transition-all duration-300 shadow-sm shadow-green-500/20"
+          >
+            {isToggling ? (
+              <i className="fa-solid fa-spinner fa-spin text-xs"></i>
+            ) : (
+              <i className="fa-solid fa-check text-xs"></i>
+            )}
+          </button>
+        </div>
+        <div className="flex-1 opacity-50 transition-opacity group-hover:opacity-70">
+          <div className="flex items-center justify-between mb-1">
+            <h3 className="text-lg font-medium text-slate-500 dark:text-slate-400 line-through decoration-2 decoration-borderline-light dark:decoration-borderline-dark">
               {task.title}
             </h3>
+            
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setIsDeleteModalOpen(true)}
+                className="text-content-sub-light dark:text-content-sub-dark hover:text-priority-urgent p-1 rounded-md transition-colors"
+              >
+                <i className="fa-regular fa-trash-can"></i>
+              </button>
+            </div>
           </div>
+          {task.description && (
+            <div 
+              className="text-slate-400 text-sm mb-3 line-clamp-2 prose prose-sm dark:prose-invert max-w-none prose-p:my-0 line-through"
+              dangerouslySetInnerHTML={{ __html: task.description }}
+            />
+          )}
         </div>
+
+        <ConfirmDialog
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={() => onDelete(task.id)}
+          title={t('confirmDeleteTitle')}
+          message={t('confirmDeleteMsg')}
+          confirmText={t('btnDelete')}
+          cancelText={t('btnCancel')}
+        />
       </div>
     );
   }
@@ -51,12 +88,13 @@ export default function TaskItem({ task, t, onToggleComplete, onDelete, onUpdate
 
       <div className={`flex gap-4 items-start ${isUrgent ? 'pl-2' : ''}`}>
         <div className="pt-1">
-          <input 
-            type="checkbox" 
-            className={`task-checkbox ${isUrgent ? 'border-priority-urgent/50' : ''}`}
-            checked={false}
-            onChange={() => onToggleComplete(task.id)}
-          />
+          <button 
+            onClick={handleToggle}
+            disabled={isToggling}
+            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300 border-borderline-light dark:border-borderline-dark hover:border-accent ${isToggling ? 'text-accent' : ''}`}
+          >
+            {isToggling && <i className="fa-solid fa-spinner fa-spin text-xs"></i>}
+          </button>
         </div>
         <div className="flex-1">
           <div className="flex items-center justify-between mb-1">

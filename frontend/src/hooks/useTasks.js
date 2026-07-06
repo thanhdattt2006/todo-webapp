@@ -1,8 +1,10 @@
 import { useState, useCallback, useEffect } from 'react';
 import { taskApi } from '../services/taskService';
 import toast from 'react-hot-toast';
+import { useLanguage } from './useLanguage';
 
 export const useTasks = () => {
+  const { t } = useLanguage();
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true); 
   const [isProcessing, setIsProcessing] = useState(false); 
@@ -31,10 +33,10 @@ export const useTasks = () => {
     try {
       const newTask = await taskApi.createTask(taskData);
       setTasks(prev => [newTask, ...prev]);
-      toast.success('Thêm task thành công!');
+      toast.success(t('taskAddedSuccess') || 'Task added successfully!');
       return true;
     } catch (err) {
-      toast.error('Lỗi khi thêm task: ' + err.message);
+      toast.error((t('taskAddedError') || 'Error adding task: ') + err.message);
       setError(err.message);
       return false;
     } finally {
@@ -48,22 +50,23 @@ export const useTasks = () => {
     setTasks(prev => prev.map(t => t.id === id ? { ...t, ...updates } : t));
     try {
       await taskApi.updateTask(id, updates);
-      toast.success('Cập nhật thành công!');
+      toast.success(t('taskUpdatedSuccess') || 'Update successful!');
     } catch (err) {
       setTasks(previousTasks);
-      toast.error('Lỗi cập nhật: ' + err.message);
+      toast.error((t('taskUpdatedError') || 'Update error: ') + err.message);
       setError(err.message);
     }
   };
 
   const toggleComplete = async (id) => {
     const previousTasks = [...tasks];
-    setTasks(prev => prev.map(t => t.id === id ? { ...t, is_completed: !t.is_completed } : t));
+    setTasks(prev => prev.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
     try {
       await taskApi.toggleComplete(id);
+      window.dispatchEvent(new Event('task-changed'));
     } catch (err) {
       setTasks(previousTasks);
-      toast.error('Lỗi: ' + err.message);
+      toast.error((t('taskError') || 'Error: ') + err.message);
       setError(err.message);
     }
   };
@@ -72,21 +75,21 @@ export const useTasks = () => {
     try {
       const updatedTask = await taskApi.pin(id);
       setTasks(prev => prev.map(t => t.id === id ? updatedTask : t));
-      toast.success(dict[currentLang]?.taskPinnedSuccess || 'Task pinned status updated');
+      toast.success(t('taskPinnedSuccess') || 'Task pinned status updated');
     } catch (err) {
-      toast.error(dict[currentLang]?.taskPinnedError || 'Failed to update pin status');
+      toast.error(t('taskPinnedError') || 'Failed to update pin status');
     }
-  }, [currentLang]);
+  }, [t]);
 
   const deleteTask = useCallback(async (id) => {
     try {
       await taskApi.deleteTask(id);
       setTasks(prev => prev.filter(t => t.id !== id));
-      toast.success(dict[currentLang]?.taskDeletedSuccess || 'Task deleted successfully');
+      toast.success(t('taskDeletedSuccess') || 'Task deleted successfully');
     } catch (err) {
-      toast.error(dict[currentLang]?.taskDeletedError || 'Failed to delete task');
+      toast.error(t('taskDeletedError') || 'Failed to delete task');
     }
-  }, [currentLang]);
+  }, [t]);
 
   useEffect(() => {
     const handleRefetch = () => fetchTasks();

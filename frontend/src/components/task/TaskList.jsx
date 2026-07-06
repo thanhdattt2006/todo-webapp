@@ -14,7 +14,7 @@ export default function TaskList({ tasks, isLoading, error, t, onToggleComplete,
   };
 
   const total = tasks.length;
-  const done = tasks.filter(t => t.is_completed).length;
+  const done = tasks.filter(t => t.completed).length;
   const pending = total - done;
 
   return (

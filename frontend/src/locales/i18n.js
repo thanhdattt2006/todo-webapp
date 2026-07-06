@@ -53,6 +53,11 @@ export const dict = {
     taskPinnedError: 'Lỗi khi ghim công việc',
     taskDeletedSuccess: 'Đã xóa công việc',
     taskDeletedError: 'Lỗi khi xóa công việc',
+    taskAddedSuccess: 'Thêm task thành công!',
+    taskAddedError: 'Lỗi khi thêm task: ',
+    taskUpdatedSuccess: 'Cập nhật thành công!',
+    taskUpdatedError: 'Lỗi cập nhật: ',
+    taskError: 'Lỗi: ',
   },
   en: {
     statTotal: 'Total Tasks',
@@ -108,5 +113,10 @@ export const dict = {
     taskPinnedError: 'Failed to update pin status',
     taskDeletedSuccess: 'Task deleted successfully',
     taskDeletedError: 'Failed to delete task',
+    taskAddedSuccess: 'Task added successfully!',
+    taskAddedError: 'Error adding task: ',
+    taskUpdatedSuccess: 'Update successful!',
+    taskUpdatedError: 'Update error: ',
+    taskError: 'Error: ',
   },
 };
