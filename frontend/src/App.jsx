@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/layout/Header';
 import TaskList from './components/task/TaskList';
+import NotFound from './components/layout/NotFound';
 import { useTasks } from './hooks/useTasks';
 import { useTheme } from './hooks/useTheme';
 import { useLanguage } from './hooks/useLanguage';
@@ -22,16 +24,22 @@ function App() {
           toggleLanguage={toggleLanguage} 
         />
         
-        <TaskList 
-          tasks={tasks}
-          isLoading={isLoading}
-          error={error}
-          t={t}
-          onToggleComplete={toggleComplete}
-          onDelete={deleteTask}
-          onAdd={addTask}
-          onUpdate={updateTask}
-        />
+        <Routes>
+          <Route path="/" element={<Navigate to="/home" replace />} />
+          <Route path="/home" element={
+            <TaskList 
+              tasks={tasks}
+              isLoading={isLoading}
+              error={error}
+              t={t}
+              onToggleComplete={toggleComplete}
+              onDelete={deleteTask}
+              onAdd={addTask}
+              onUpdate={updateTask}
+            />
+          } />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
         <Toaster position="bottom-right" />
       </main>
     </>
