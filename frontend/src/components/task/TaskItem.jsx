@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import TaskModal from '../common/TaskModal';
 import ConfirmDialog from '../common/ConfirmDialog';
 
-export default function TaskItem({ task, t, onToggleComplete, onDelete, onUpdate }) {
+export default function TaskItem({ task, t, onToggleComplete, onDelete, onUpdate, onTogglePin }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -67,7 +67,7 @@ export default function TaskItem({ task, t, onToggleComplete, onDelete, onUpdate
             <div className="flex items-center gap-2">
               {task.is_pinned && (
                 <button 
-                  onClick={() => onUpdate(task.id, { is_pinned: false })}
+                  onClick={() => onTogglePin(task.id)}
                   className={`${isUrgent ? 'text-priority-urgent' : 'text-accent'} opacity-50 hover:opacity-100 transition-opacity p-1`}
                 >
                   <i className="fa-solid fa-thumbtack"></i>
@@ -85,7 +85,7 @@ export default function TaskItem({ task, t, onToggleComplete, onDelete, onUpdate
                 {isMenuOpen && (
                   <div className="absolute right-0 top-full mt-2 w-48 bg-card-light dark:bg-card-dark border border-borderline-light dark:border-borderline-dark rounded-xl shadow-card-hover z-20 py-2 animate-fade-in-down">
                     <button 
-                      onClick={() => { onUpdate(task.id, { is_pinned: !task.is_pinned }); setIsMenuOpen(false); }}
+                      onClick={() => { onTogglePin(task.id); setIsMenuOpen(false); }}
                       className="w-full text-left px-4 py-2 text-sm text-content-main-light dark:text-content-main-dark hover:bg-surface-light dark:hover:bg-surface-dark transition-colors flex items-center gap-3"
                     >
                       <i className="fa-solid fa-thumbtack w-4"></i>

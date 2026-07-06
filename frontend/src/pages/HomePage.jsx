@@ -17,6 +17,7 @@ export default function HomePage() {
       onDelete={deleteTask}
       onAdd={addTask}
       onUpdate={updateTask}
+      onTogglePin={togglePinTask}
     />
   );
 }

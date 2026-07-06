@@ -68,22 +68,35 @@ export const useTasks = () => {
     }
   };
 
-  const deleteTask = async (id) => {
-    const previousTasks = [...tasks];
-    setTasks(prev => prev.filter(t => t.id !== id));
+  const togglePinTask = useCallback(async (id) => {
+    try {
+      const updatedTask = await taskApi.pin(id);
+      setTasks(prev => prev.map(t => t.id === id ? updatedTask : t));
+      toast.success('Task pinned status updated');
+    } catch (err) {
+      toast.error('Failed to update pin status');
+    }
+  }, []);
+
+  const deleteTask = useCallback(async (id) => {
     try {
       await taskApi.deleteTask(id);
-      toast.success('Đã xóa task!');
+      setTasks(prev => prev.filter(t => t.id !== id));
+      toast.success('Task deleted successfully');
     } catch (err) {
-      setTasks(previousTasks);
-      toast.error('Lỗi xóa task: ' + err.message);
-      setError(err.message);
+      toast.error('Failed to delete task');
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    const handleRefetch = () => fetchTasks();
+    window.addEventListener('task-changed', handleRefetch);
+    return () => window.removeEventListener('task-changed', handleRefetch);
+  }, [fetchTasks]);
 
   return {
     tasks, isLoading, isProcessing, error,
     clearError: () => setError(null),
-    fetchTasks, addTask, updateTask, toggleComplete, deleteTask
+    fetchTasks, addTask, updateTask, toggleComplete, deleteTask, togglePinTask
   };
 };

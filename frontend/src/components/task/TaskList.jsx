@@ -3,7 +3,7 @@ import TaskItem from './TaskItem';
 import EmptyState from '../common/EmptyState';
 import TaskModal from '../common/TaskModal';
 
-export default function TaskList({ tasks, isLoading, error, t, onToggleComplete, onDelete, onAdd, onUpdate }) {
+export default function TaskList({ tasks, isLoading, error, t, onToggleComplete, onDelete, onAdd, onUpdate, onTogglePin }) {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const handleAdd = async (data) => {
@@ -80,6 +80,7 @@ export default function TaskList({ tasks, isLoading, error, t, onToggleComplete,
               onToggleComplete={onToggleComplete}
               onDelete={onDelete}
               onUpdate={onUpdate}
+              onTogglePin={onTogglePin}
             />
           ))
         )}

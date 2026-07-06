@@ -2,11 +2,9 @@ import apiClient from './apiClient';
 
 export const taskApi = {
   fetchTasks: async (filters = {}) => {
-    // Truyền filter xuống backend (nếu backend hỗ trợ)
     const params = {};
     if (filters.status) params.status = filters.status;
     if (filters.search) params.search = filters.search;
-    
     return apiClient.get('/tasks', { params });
   },
   
@@ -24,5 +22,25 @@ export const taskApi = {
   
   deleteTask: async (id) => {
     return apiClient.delete(`/tasks/${id}`);
+  },
+
+  pin: async (id) => {
+    return apiClient.patch(`/tasks/${id}/pin`);
+  },
+
+  getTrash: async () => {
+    return apiClient.get('/tasks/trash');
+  },
+
+  restore: async (id) => {
+    return apiClient.patch(`/tasks/${id}/restore`);
+  },
+
+  forceDelete: async (id) => {
+    return apiClient.delete(`/tasks/${id}/force`);
+  },
+
+  getAchievements: async () => {
+    return apiClient.get('/tasks/achievements');
   }
 };
