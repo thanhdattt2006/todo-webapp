@@ -18,7 +18,7 @@ export default function AchievementModal({ isOpen, onClose }) {
       const data = await taskApi.getAchievements();
       setAchievements(data);
     } catch (error) {
-      console.error(error);
+      // Ignore error to keep console clean in production
     } finally {
       setIsLoading(false);
     }

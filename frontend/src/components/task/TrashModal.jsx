@@ -3,9 +3,10 @@ import { Dialog, Transition } from '@headlessui/react';
 import { taskApi } from '../../services/taskService';
 import toast from 'react-hot-toast';
 import { useLanguage } from '../../hooks/useLanguage';
+import { formatDate } from '../../utils/dateUtils';
 
 export default function TrashModal({ isOpen, onClose }) {
-  const { t } = useLanguage();
+  const { t, currentLang } = useLanguage();
   const [trashedTasks, setTrashedTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -95,7 +96,7 @@ export default function TrashModal({ isOpen, onClose }) {
                           <span className="font-semibold text-content-main-light dark:text-content-main-dark block truncate">{task.title}</span>
                           <span className="text-xs text-content-sub-light dark:text-content-sub-dark block mt-1">
                             {t('deletedAt')} 
-                            {new Date(task.deletedAt || Date.now()).toLocaleString()}
+                            {formatDate(task.deletedAt || new Date(), currentLang)}
                           </span>
                         </div>
                         <div className="flex items-center gap-2 w-full sm:w-auto">
