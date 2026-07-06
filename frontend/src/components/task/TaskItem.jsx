@@ -1,7 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
+import TaskModal from '../common/TaskModal';
+import ConfirmDialog from '../common/ConfirmDialog';
 
 export default function TaskItem({ task, t, onToggleComplete, onDelete, onUpdate }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -88,20 +92,14 @@ export default function TaskItem({ task, t, onToggleComplete, onDelete, onUpdate
                       <span>{task.is_pinned ? (t('menuUnpin') || 'Bỏ ghim') : (t('menuPin') || 'Ghim task')}</span>
                     </button>
                     <button 
-                      onClick={() => { 
-                        const newTitle = prompt('Cập nhật tên task:', task.title);
-                        if (newTitle && newTitle.trim() !== '') {
-                          onUpdate(task.id, { title: newTitle.trim() });
-                        }
-                        setIsMenuOpen(false); 
-                      }}
+                      onClick={() => { setIsEditModalOpen(true); setIsMenuOpen(false); }}
                       className="w-full text-left px-4 py-2 text-sm text-content-main-light dark:text-content-main-dark hover:bg-surface-light dark:hover:bg-surface-dark transition-colors flex items-center gap-3"
                     >
                       <i className="fa-regular fa-pen-to-square w-4"></i>
                       <span>{t('menuEdit') || 'Chỉnh sửa'}</span>
                     </button>
                     <button 
-                      onClick={() => onDelete(task.id)}
+                      onClick={() => { setIsDeleteModalOpen(true); setIsMenuOpen(false); }}
                       className="w-full text-left px-4 py-2 text-sm text-priority-urgent hover:bg-priority-urgent/10 transition-colors flex items-center gap-3"
                     >
                       <i className="fa-regular fa-trash-can w-4"></i>
@@ -114,9 +112,10 @@ export default function TaskItem({ task, t, onToggleComplete, onDelete, onUpdate
           </div>
           
           {task.description && (
-            <p className="text-content-sub-light dark:text-content-sub-dark text-sm mb-3 line-clamp-2">
-              {task.description}
-            </p>
+            <div 
+              className="text-content-sub-light dark:text-content-sub-dark text-sm mb-3 line-clamp-2 prose prose-sm dark:prose-invert max-w-none prose-p:my-0"
+              dangerouslySetInnerHTML={{ __html: task.description }}
+            />
           )}
 
           <div className="flex items-center gap-3 font-mono text-xs font-semibold">
@@ -137,6 +136,27 @@ export default function TaskItem({ task, t, onToggleComplete, onDelete, onUpdate
           </div>
         </div>
       </div>
+
+      <TaskModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onSave={(data) => {
+          onUpdate(task.id, data);
+        }}
+        t={t}
+        isEditMode={true}
+        initialData={task}
+      />
+
+      <ConfirmDialog
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={() => onDelete(task.id)}
+        title={t('confirmDeleteTitle')}
+        message={t('confirmDeleteMsg')}
+        confirmText={t('btnDelete')}
+        cancelText={t('btnCancel')}
+      />
     </div>
   );
 }

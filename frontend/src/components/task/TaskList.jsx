@@ -1,24 +1,15 @@
 import React, { useState } from 'react';
 import TaskItem from './TaskItem';
 import EmptyState from '../common/EmptyState';
+import TaskModal from '../common/TaskModal';
 
 export default function TaskList({ tasks, isLoading, error, t, onToggleComplete, onDelete, onAdd, onUpdate }) {
-  const [newTaskTitle, setNewTaskTitle] = useState('');
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-  const handleAdd = async () => {
-    if (!newTaskTitle.trim()) {
-      alert(t('errorEmptyTitle') || 'Title must not be blank');
-      return;
-    }
-    const success = await onAdd({ title: newTaskTitle.trim(), priority: 'medium' });
+  const handleAdd = async (data) => {
+    const success = await onAdd(data);
     if (success) {
-      setNewTaskTitle('');
-    }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      handleAdd();
+      setIsAddModalOpen(false);
     }
   };
 
@@ -58,23 +49,13 @@ export default function TaskList({ tasks, isLoading, error, t, onToggleComplete,
 
       <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
         <h2 className="text-xl font-bold whitespace-nowrap">{t('listTitle')}</h2>
-        <div className="flex w-full sm:w-auto items-center gap-2">
-          <input 
-            type="text" 
-            value={newTaskTitle}
-            onChange={(e) => setNewTaskTitle(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder={t('placeholderNewTask') || 'Enter new task...'}
-            className="flex-1 sm:w-64 bg-background-light dark:bg-background-dark border border-borderline-light dark:border-borderline-dark rounded-full px-4 py-2.5 text-sm focus:outline-none focus:border-accent"
-          />
-          <button 
-            onClick={handleAdd}
-            className="bg-accent hover:bg-accent-hover text-white px-5 py-2.5 rounded-full font-semibold text-sm shadow-accent transition-all duration-bounce hover:scale-105 flex items-center gap-2 whitespace-nowrap"
-          >
-            <i className="fa-solid fa-plus"></i>
-            <span className="hidden sm:inline">{t('btnAddTask')}</span>
-          </button>
-        </div>
+        <button 
+          onClick={() => setIsAddModalOpen(true)}
+          className="bg-accent hover:bg-accent-hover text-white px-5 py-2.5 rounded-full font-semibold text-sm shadow-accent transition-all duration-bounce hover:scale-105 flex items-center gap-2 whitespace-nowrap"
+        >
+          <i className="fa-solid fa-plus"></i>
+          <span>{t('btnAddTask')}</span>
+        </button>
       </div>
 
       <div className="space-y-4 relative">
@@ -103,6 +84,14 @@ export default function TaskList({ tasks, isLoading, error, t, onToggleComplete,
           ))
         )}
       </div>
+
+      <TaskModal 
+        isOpen={isAddModalOpen} 
+        onClose={() => setIsAddModalOpen(false)} 
+        onSave={handleAdd} 
+        t={t} 
+        isEditMode={false} 
+      />
     </>
   );
 }

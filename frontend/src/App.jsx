@@ -40,7 +40,13 @@ function App() {
           } />
           <Route path="*" element={<NotFound />} />
         </Routes>
-        <Toaster position="bottom-right" />
+        <Toaster 
+          position="bottom-right" 
+          toastOptions={{
+            className: 'dark:bg-card-dark dark:text-content-main-dark border dark:border-borderline-dark',
+          }}
+          containerStyle={{ zIndex: 999999 }}
+        />
       </main>
     </>
   );
