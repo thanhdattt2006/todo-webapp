@@ -1,3 +1,6 @@
 AGENTS.md
 TODO.md
 rule.txt
+
+# Ignore sensitive application.yml
+backend/src/main/resources/application.yml
