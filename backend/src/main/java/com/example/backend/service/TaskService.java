@@ -67,4 +67,38 @@ public class TaskService {
                 .orElseThrow(() -> new RuntimeException("Task not found"));
         taskRepository.delete(existingTask); // Sẽ tự động trigger Soft Delete qua @SQLDelete
     }
+
+    @Transactional(readOnly = true)
+    public Task getTaskById(Long id) {
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+    }
+
+    @Transactional
+    public Task togglePin(Long id) {
+        Task existingTask = taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+        existingTask.setIsPinned(!existingTask.getIsPinned());
+        return taskRepository.save(existingTask);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Task> getTrashedTasks() {
+        return taskRepository.findTrashedTasks();
+    }
+
+    @Transactional
+    public void restoreTask(Long id) {
+        taskRepository.restoreTaskNative(id);
+    }
+
+    @Transactional
+    public void forceDeleteTask(Long id) {
+        taskRepository.forceDeleteTask(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Task> getAchievements() {
+        return taskRepository.findAchievements();
+    }
 }

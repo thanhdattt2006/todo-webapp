@@ -2,6 +2,7 @@ package com.example.backend.repository;
 
 import com.example.backend.entity.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,18 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
            "(:search IS NULL OR LOWER(t.title) LIKE LOWER(CONCAT('%', :search, '%')) OR LOWER(t.description) LIKE LOWER(CONCAT('%', :search, '%'))) " +
            "ORDER BY t.isPinned DESC, t.priority DESC, t.createdAt DESC")
     List<Task> findAllWithFilters(@Param("status") Boolean status, @Param("search") String search);
+
+    @Query(value = "SELECT * FROM tasks WHERE deleted_at IS NOT NULL", nativeQuery = true)
+    List<Task> findTrashedTasks();
+
+    @Modifying
+    @Query(value = "UPDATE tasks SET deleted_at = NULL WHERE id = ?", nativeQuery = true)
+    void restoreTaskNative(Long id);
+
+    @Modifying
+    @Query(value = "DELETE FROM tasks WHERE id = ?", nativeQuery = true)
+    void forceDeleteTask(Long id);
+
+    @Query("SELECT t FROM Task t WHERE t.completed = true ORDER BY t.updatedAt DESC")
+    List<Task> findAchievements();
 }

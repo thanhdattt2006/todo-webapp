@@ -46,4 +46,36 @@ public class TaskController {
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Task> getTask(@PathVariable Long id) {
+        return ResponseEntity.ok(taskService.getTaskById(id));
+    }
+
+    @PatchMapping("/{id}/pin")
+    public ResponseEntity<Task> togglePin(@PathVariable Long id) {
+        return ResponseEntity.ok(taskService.togglePin(id));
+    }
+
+    @GetMapping("/trash")
+    public ResponseEntity<List<Task>> getTrashedTasks() {
+        return ResponseEntity.ok(taskService.getTrashedTasks());
+    }
+
+    @PatchMapping("/{id}/restore")
+    public ResponseEntity<Void> restoreTask(@PathVariable Long id) {
+        taskService.restoreTask(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}/force")
+    public ResponseEntity<Void> forceDeleteTask(@PathVariable Long id) {
+        taskService.forceDeleteTask(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/achievements")
+    public ResponseEntity<List<Task>> getAchievements() {
+        return ResponseEntity.ok(taskService.getAchievements());
+    }
 }
