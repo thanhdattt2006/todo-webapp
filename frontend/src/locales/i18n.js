@@ -67,6 +67,10 @@ export const dict = {
     btnNotYet: 'Chưa đâu',
     btnYesDone: 'Đúng vậy!',
     noDescription: 'Không có mô tả chi tiết',
+    searchPlaceholder: 'Tìm kiếm công việc...',
+    filterAll: 'Tất cả',
+    filterPending: 'Chưa xong',
+    filterCompleted: 'Đã xong',
   },
   en: {
     statTotal: 'Total Tasks',
@@ -136,5 +140,9 @@ export const dict = {
     btnNotYet: 'Not yet',
     btnYesDone: 'Yes, I have!',
     noDescription: 'No description',
+    searchPlaceholder: 'Search tasks...',
+    filterAll: 'All Tasks',
+    filterPending: 'Pending',
+    filterCompleted: 'Completed',
   },
 };
