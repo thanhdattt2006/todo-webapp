@@ -69,10 +69,10 @@ export default function TaskList({ tasks, isLoading, error, t, onToggleComplete,
           <div className="text-center py-10 opacity-50">
             <i className="fa-solid fa-spinner fa-spin text-3xl"></i>
           </div>
-        ) : tasks.length === 0 ? (
+        ) : tasks.filter(t => !t.completed).length === 0 ? (
           <EmptyState t={t} />
         ) : (
-          tasks.map(task => (
+          tasks.filter(t => !t.completed).map(task => (
             <TaskItem 
               key={task.id} 
               task={task} 

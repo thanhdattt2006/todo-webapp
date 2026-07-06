@@ -58,6 +58,10 @@ export const dict = {
     taskUpdatedSuccess: 'Cập nhật thành công!',
     taskUpdatedError: 'Lỗi cập nhật: ',
     taskError: 'Lỗi: ',
+    confirmCompleteTitle: 'Xác nhận hoàn thành',
+    confirmCompleteMsg: 'Bạn đã thực sự hoàn thành xuất sắc công việc này?',
+    btnNotYet: 'Chưa đâu',
+    btnYesDone: 'Đúng vậy!',
   },
   en: {
     statTotal: 'Total Tasks',
@@ -118,5 +122,9 @@ export const dict = {
     taskUpdatedSuccess: 'Update successful!',
     taskUpdatedError: 'Update error: ',
     taskError: 'Error: ',
+    confirmCompleteTitle: 'Confirm Completion',
+    confirmCompleteMsg: 'Have you really completed this task excellently?',
+    btnNotYet: 'Not yet',
+    btnYesDone: 'Yes, I have!',
   },
 };

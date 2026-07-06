@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import TaskModal from '../common/TaskModal';
 import ConfirmDialog from '../common/ConfirmDialog';
+import toast from 'react-hot-toast';
 
 export default function TaskItem({ task, t, onToggleComplete, onDelete, onUpdate, onTogglePin }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isConfirmCompleteOpen, setIsConfirmCompleteOpen] = useState(false);
   const [isToggling, setIsToggling] = useState(false);
   const menuRef = useRef(null);
 
@@ -22,10 +24,40 @@ export default function TaskItem({ task, t, onToggleComplete, onDelete, onUpdate
   const isUrgent = task.priority === 'urgent';
   const isCompleted = task.completed;
 
-  const handleToggle = async () => {
+  const handleToggle = () => {
+    if (isCompleted) {
+      handleConfirmComplete();
+    } else {
+      setIsConfirmCompleteOpen(true);
+    }
+  };
+
+  const handleConfirmComplete = async () => {
     setIsToggling(true);
     await onToggleComplete(task.id);
     setIsToggling(false);
+    
+    if (!isCompleted) {
+      toast.custom((t_toast) => (
+        <div className={`${t_toast.visible ? 'animate-fade-in-down' : 'animate-fade-out-up'} max-w-md w-full bg-yellow-50 dark:bg-yellow-900/40 shadow-lg rounded-2xl pointer-events-auto flex ring-1 ring-black ring-opacity-5 border border-yellow-200 dark:border-yellow-700/50 p-4`}>
+          <div className="flex-1 w-0 p-2">
+            <div className="flex items-start">
+              <div className="flex-shrink-0 pt-0.5">
+                <i className="fa-solid fa-trophy text-yellow-500 text-3xl drop-shadow-md"></i>
+              </div>
+              <div className="ml-4 flex-1">
+                <p className="text-sm font-bold text-yellow-800 dark:text-yellow-200">
+                  🎉 Thành tựu mới!
+                </p>
+                <p className="mt-1 text-sm text-yellow-700 dark:text-yellow-400">
+                  <span className="font-semibold">{task.title}</span> đã được chinh phục!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ), { duration: 4000 });
+    }
   };
 
   if (isCompleted) {
@@ -194,6 +226,18 @@ export default function TaskItem({ task, t, onToggleComplete, onDelete, onUpdate
         message={t('confirmDeleteMsg')}
         confirmText={t('btnDelete')}
         cancelText={t('btnCancel')}
+        type="danger"
+      />
+      
+      <ConfirmDialog
+        isOpen={isConfirmCompleteOpen}
+        onClose={() => setIsConfirmCompleteOpen(false)}
+        onConfirm={handleConfirmComplete}
+        title={t('confirmCompleteTitle') || 'Xác nhận hoàn thành'}
+        message={t('confirmCompleteMsg') || 'Bạn đã thực sự hoàn thành xuất sắc công việc này?'}
+        confirmText={t('btnYesDone') || 'Đúng vậy!'}
+        cancelText={t('btnNotYet') || 'Chưa đâu'}
+        type="success"
       />
     </div>
   );
