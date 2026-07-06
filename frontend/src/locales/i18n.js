@@ -10,7 +10,8 @@ export const dict = {
     menuPin: 'Ghim task',
     menuUnpin: 'Bỏ ghim',
     emptyTitle: 'Không có task nào!',
-    emptyDesc: 'Cà phê đã pha xong. Hãy tạo task mới để bắt đầu một ngày làm việc năng suất nhé.',
+    emptyDesc:
+      'Cà phê đã pha xong. Hãy tạo task mới để bắt đầu một ngày làm việc năng suất nhé.',
     errorEmptyTitle: 'Tiêu đề không được để trống',
     addTaskTitle: 'Tạo công việc mới',
     editTaskTitle: 'Chỉnh sửa công việc',
@@ -25,10 +26,12 @@ export const dict = {
     btnSave: 'Lưu công việc',
     btnCancel: 'Hủy',
     confirmDeleteTitle: 'Xác nhận xóa',
-    confirmDeleteMsg: 'Bạn có chắc chắn muốn xóa công việc này không? Hành động này không thể hoàn tác.',
+    confirmDeleteMsg:
+      'Bạn có chắc chắn muốn xóa công việc này không? Hành động này không thể hoàn tác.',
     btnDelete: 'Xóa',
     pageNotFound: 'Không tìm thấy trang',
-    pageNotFoundDesc: 'Trang bạn đang tìm kiếm không tồn tại hoặc đã bị di dời.',
+    pageNotFoundDesc:
+      'Trang bạn đang tìm kiếm không tồn tại hoặc đã bị di dời.',
     backToHome: 'Về trang chủ',
     trashLoadError: 'Không thể tải thùng rác',
     taskRestored: 'Đã khôi phục công việc',
@@ -42,7 +45,8 @@ export const dict = {
     btnForceDelete: 'Xóa hẳn',
     btnClose: 'Đóng',
     achievementTitle: 'Bảng Vàng Thành Tựu',
-    achievementDesc: 'Vinh danh những nỗ lực tuyệt vời của bạn. Dưới đây là những công việc bạn đã xuất sắc hoàn thành.',
+    achievementDesc:
+      'Vinh danh những nỗ lực tuyệt vời của bạn. Dưới đây là những công việc bạn đã xuất sắc hoàn thành.',
     achievementEmpty: 'Chưa có thành tựu nào. Cố gắng lên nhé!',
     btnKeepItUp: 'Tiếp tục phát huy!',
     priorityUrgentLabel: 'KHẨN CẤP',
@@ -62,6 +66,7 @@ export const dict = {
     confirmCompleteMsg: 'Bạn đã thực sự hoàn thành xuất sắc công việc này?',
     btnNotYet: 'Chưa đâu',
     btnYesDone: 'Đúng vậy!',
+    noDescription: 'Không có mô tả chi tiết',
   },
   en: {
     statTotal: 'Total Tasks',
@@ -74,7 +79,8 @@ export const dict = {
     menuPin: 'Pin task',
     menuUnpin: 'Unpin task',
     emptyTitle: 'All caught up!',
-    emptyDesc: 'Your coffee is ready. Create a new task to kickstart your productive day.',
+    emptyDesc:
+      'Your coffee is ready. Create a new task to kickstart your productive day.',
     errorEmptyTitle: 'Title must not be blank',
     addTaskTitle: 'Create New Task',
     editTaskTitle: 'Edit Task',
@@ -89,10 +95,12 @@ export const dict = {
     btnSave: 'Save Task',
     btnCancel: 'Cancel',
     confirmDeleteTitle: 'Confirm Deletion',
-    confirmDeleteMsg: 'Are you sure you want to delete this task? This action cannot be undone.',
+    confirmDeleteMsg:
+      'Are you sure you want to delete this task? This action cannot be undone.',
     btnDelete: 'Delete',
     pageNotFound: 'Page Not Found',
-    pageNotFoundDesc: 'The page you are looking for doesn\'t exist or has been moved.',
+    pageNotFoundDesc:
+      "The page you are looking for doesn't exist or has been moved.",
     backToHome: 'Back to Home',
     trashLoadError: 'Failed to load trash',
     taskRestored: 'Task restored',
@@ -106,7 +114,8 @@ export const dict = {
     btnForceDelete: 'Delete',
     btnClose: 'Close',
     achievementTitle: 'Hall of Fame',
-    achievementDesc: 'Honoring your great efforts. Here are the tasks you have successfully completed.',
+    achievementDesc:
+      'Honoring your great efforts. Here are the tasks you have successfully completed.',
     achievementEmpty: 'No achievements yet. Keep going!',
     btnKeepItUp: 'Keep it up!',
     priorityUrgentLabel: 'URGENT',
@@ -126,5 +135,6 @@ export const dict = {
     confirmCompleteMsg: 'Have you really completed this task excellently?',
     btnNotYet: 'Not yet',
     btnYesDone: 'Yes, I have!',
+    noDescription: 'No description',
   },
 };
