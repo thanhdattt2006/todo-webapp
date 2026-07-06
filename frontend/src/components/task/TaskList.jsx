@@ -6,7 +6,6 @@ import TaskModal from '../common/TaskModal';
 export default function TaskList({ tasks, isLoading, error, t, onToggleComplete, onDelete, onAdd, onUpdate, onTogglePin }) {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterStatus, setFilterStatus] = useState('pending'); // 'all', 'pending', 'completed'
 
   const handleAdd = async (data) => {
     const success = await onAdd(data);
@@ -20,8 +19,7 @@ export default function TaskList({ tasks, isLoading, error, t, onToggleComplete,
   const pending = total - done;
 
   const filteredTasks = tasks.filter(t => {
-    if (filterStatus === 'pending' && t.completed) return false;
-    if (filterStatus === 'completed' && !t.completed) return false;
+    if (t.completed) return false;
     
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
@@ -74,26 +72,15 @@ export default function TaskList({ tasks, isLoading, error, t, onToggleComplete,
           </button>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3">
-          <div className="relative flex-1">
-            <i className="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-            <input 
-              type="text" 
-              placeholder={t('searchPlaceholder') || 'Tìm kiếm công việc...'}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-surface-light dark:bg-surface-dark border border-borderline-light dark:border-borderline-dark rounded-xl py-2.5 pl-11 pr-4 focus:outline-none focus:border-accent transition-colors text-sm"
-            />
-          </div>
-          <select 
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="bg-surface-light dark:bg-surface-dark border border-borderline-light dark:border-borderline-dark rounded-xl py-2.5 px-4 focus:outline-none focus:border-accent transition-colors text-sm min-w-[140px]"
-          >
-            <option value="all">{t('filterAll') || 'Tất cả'}</option>
-            <option value="pending">{t('filterPending') || 'Chưa xong'}</option>
-            <option value="completed">{t('filterCompleted') || 'Đã xong'}</option>
-          </select>
+        <div className="relative w-full">
+          <i className="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input 
+            type="text" 
+            placeholder={t('searchPlaceholder') || 'Tìm kiếm công việc...'}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-surface-light dark:bg-surface-dark border border-borderline-light dark:border-borderline-dark rounded-xl py-2.5 pl-11 pr-4 focus:outline-none focus:border-accent transition-colors text-sm"
+          />
         </div>
       </div>
 
