@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function NotFound() {
+export default function NotFoundPage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[50vh] text-center animate-fade-in-down">
       <h1 className="text-9xl font-extrabold text-accent mb-4 tracking-tighter">404</h1>

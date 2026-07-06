@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const axiosClient = axios.create({
+const apiClient = axios.create({
   baseURL: 'http://localhost:8080/api',
   headers: {
     'Content-Type': 'application/json',
@@ -8,7 +8,7 @@ const axiosClient = axios.create({
 });
 
 // Thêm interceptors xử lý response chung
-axiosClient.interceptors.response.use(
+apiClient.interceptors.response.use(
   (response) => {
     return response.data; // Chỉ trả về data, bỏ qua config/headers của axios
   },
@@ -19,4 +19,4 @@ axiosClient.interceptors.response.use(
   }
 );
 
-export default axiosClient;
+export default apiClient;

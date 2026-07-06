@@ -1,4 +1,4 @@
-import axiosClient from '../api/axiosClient';
+import apiClient from './apiClient';
 
 export const taskApi = {
   fetchTasks: async (filters = {}) => {
@@ -7,22 +7,22 @@ export const taskApi = {
     if (filters.status) params.status = filters.status;
     if (filters.search) params.search = filters.search;
     
-    return axiosClient.get('/tasks', { params });
+    return apiClient.get('/tasks', { params });
   },
   
   createTask: async (taskData) => {
-    return axiosClient.post('/tasks', taskData);
+    return apiClient.post('/tasks', taskData);
   },
   
   updateTask: async (id, updates) => {
-    return axiosClient.put(`/tasks/${id}`, updates);
+    return apiClient.put(`/tasks/${id}`, updates);
   },
   
   toggleComplete: async (id) => {
-    return axiosClient.patch(`/tasks/${id}/toggle`);
+    return apiClient.patch(`/tasks/${id}/toggle`);
   },
   
   deleteTask: async (id) => {
-    return axiosClient.delete(`/tasks/${id}`);
+    return apiClient.delete(`/tasks/${id}`);
   }
 };

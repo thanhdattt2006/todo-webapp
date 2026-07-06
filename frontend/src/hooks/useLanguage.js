@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { dict } from '../utils/i18n';
+import { dict } from '../locales/i18n';
 
 export const useLanguage = () => {
   const [currentLang, setCurrentLang] = useState('en');

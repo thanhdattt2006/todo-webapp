@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import ThemeToggle from '../common/ThemeToggle';
+import LanguageToggle from '../common/LanguageToggle';
 
 export default function Header({ isDark, toggleTheme, currentLang, toggleLanguage }) {
   return (
@@ -13,18 +15,8 @@ export default function Header({ isDark, toggleTheme, currentLang, toggleLanguag
         </h1>
       </Link>
       <div className="flex items-center gap-2">
-        <button
-          onClick={toggleLanguage}
-          className="w-10 h-10 rounded-full flex items-center justify-center text-content-sub-light dark:text-content-sub-dark hover:bg-borderline-light dark:hover:bg-borderline-dark transition-colors font-mono font-bold text-sm"
-        >
-          {currentLang.toUpperCase()}
-        </button>
-        <button
-          onClick={toggleTheme}
-          className="w-10 h-10 rounded-full flex items-center justify-center text-content-sub-light dark:text-content-sub-dark hover:bg-borderline-light dark:hover:bg-borderline-dark transition-colors text-lg"
-        >
-          <i className={`fa-solid ${isDark ? 'fa-sun text-yellow-400' : 'fa-moon'}`}></i>
-        </button>
+        <LanguageToggle currentLang={currentLang} toggleLanguage={toggleLanguage} />
+        <ThemeToggle isDark={isDark} toggleTheme={toggleTheme} />
       </div>
     </header>
   );

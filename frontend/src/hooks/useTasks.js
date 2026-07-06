@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { taskApi } from '../services/api';
+import { taskApi } from '../services/taskService';
 import toast from 'react-hot-toast';
 
 export const useTasks = () => {
